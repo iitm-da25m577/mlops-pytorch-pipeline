@@ -45,10 +45,13 @@ resulting checkpoint.
 
 ## Local setup
 
+**Requires Python 3.11** (torch==2.3.1 has no wheels for newer Python versions like 3.14).
+
 ```bash
 python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements/train.txt
+python src/train.py --config configs/training_config.yaml
 python src/train.py --config configs/training_config.yaml
 ```
 
