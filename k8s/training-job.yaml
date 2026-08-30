@@ -39,6 +39,12 @@ spec:
         app: model-training
         student: DA25M577
     spec:
+      nodeSelector:
+        accelerator: nvidia-gpu
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Exists"
+          effect: "NoSchedule"
       restartPolicy: Never
       containers:
         - name: train
@@ -46,11 +52,12 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              cpu: "2"
+              cpu: "4"
               memory: 4Gi
             limits:
-              cpu: "2"
+              cpu: "16"
               memory: 4Gi
+              nvidia.com/gpu: 1
           volumeMounts:
             - name: config-volume
               mountPath: /app/configs
@@ -68,14 +75,5 @@ spec:
         - name: checkpoints-volume
           persistentVolumeClaim:
             claimName: checkpoints-pvc
-      # Bonus: GPU scheduling. Requires a cluster with a GPU node pool and the
-      # NVIDIA device plugin installed. Uncomment to enable:
-      # nodeSelector:
-      #   accelerator: nvidia-gpu
-      # tolerations:
-      #   - key: "nvidia.com/gpu"
-      #     operator: "Exists"
-      #     effect: "NoSchedule"
-      # and add to the train container's resources:
-      #   limits:
-      #     nvidia.com/gpu: 1
+      # GPU scheduling enabled above. Requires a cluster with a GPU node pool
+      # and the NVIDIA device plugin (k8s-device-plugin) installed.
