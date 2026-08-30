@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dataset-pvc
+  namespace: ml-training
+  labels:
+    student: DA25M577
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: checkpoints-pvc
+  namespace: ml-training
+  labels:
+    student: DA25M577
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: model-training
+  namespace: ml-training
+  labels:
+    student: DA25M577
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app: model-training
+        student: DA25M577
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: train
+          image: mlops-train:DA25M577
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "2"
+              memory: 4Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/configs
+            - name: data-volume
+              mountPath: /app/data
+            - name: checkpoints-volume
+              mountPath: /app/checkpoints
+      volumes:
+        - name: config-volume
+          configMap:
+            name: training-config
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: dataset-pvc
+        - name: checkpoints-volume
+          persistentVolumeClaim:
+            claimName: checkpoints-pvc
+      # Bonus: GPU scheduling. Requires a cluster with a GPU node pool and the
+      # NVIDIA device plugin installed. Uncomment to enable:
+      # nodeSelector:
+      #   accelerator: nvidia-gpu
+      # tolerations:
+      #   - key: "nvidia.com/gpu"
+      #     operator: "Exists"
+      #     effect: "NoSchedule"
+      # and add to the train container's resources:
+      #   limits:
+      #     nvidia.com/gpu: 1

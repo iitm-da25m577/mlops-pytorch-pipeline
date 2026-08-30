@@ -1,0 +1,18 @@
+# syntax=docker/dockerfile:1
+
+# Stage 1: install pinned dependencies
+FROM python:3.11-slim AS base
+LABEL student="DA25M577"
+WORKDIR /app
+COPY requirements/train.txt .
+RUN pip install --no-cache-dir -r train.txt
+
+# Stage 2: training runtime
+FROM base AS training
+COPY src/ ./src/
+COPY configs/ ./configs/
+
+ENV PYTHONUNBUFFERED=1
+WORKDIR /app/src
+
+ENTRYPOINT ["python", "train.py"]
