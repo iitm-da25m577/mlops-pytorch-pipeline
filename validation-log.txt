@@ -1,10 +1,10 @@
 NAME                             READY   STATUS      RESTARTS   AGE
-model-serving-6757688884-6xtd6   1/1     Running     0          7m13s
-model-serving-6757688884-x8xgg   1/1     Running     0          7m13s
-model-training-2z6zz             0/1     Completed   0          25m
+model-serving-6757688884-djbjm   1/1     Running     0          34s
+model-serving-6757688884-wnfrc   1/1     Running     0          34s
+model-training-cxlzg             0/1     Completed   0          35m
 Name:                   model-serving
 Namespace:              ml-training
-CreationTimestamp:      Sun, 30 Aug 2026 18:44:20 +0530
+CreationTimestamp:      Sun, 30 Aug 2026 20:20:29 +0530
 Labels:                 student=DA25M577
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               app=model-serving
@@ -46,12 +46,12 @@ Conditions:
 OldReplicaSets:  <none>
 NewReplicaSet:   model-serving-6757688884 (2/2 replicas created)
 Events:
-  Type    Reason             Age    From                   Message
-  ----    ------             ----   ----                   -------
-  Normal  ScalingReplicaSet  7m13s  deployment-controller  Scaled up replica set model-serving-6757688884 from 0 to 2
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  34s   deployment-controller  Scaled up replica set model-serving-6757688884 from 0 to 2
 Forwarding from 127.0.0.1:8081 -> 8080
 Forwarding from [::1]:8081 -> 8080
 Handling connection for 8081
 {"status":"ok"}
 Handling connection for 8081
-{"predictions":[{"class":"T-shirt/top","probability":0.0},{"class":"Trouser","probability":0.0},{"class":"Pullover","probability":0.0},{"class":"Dress","probability":0.0},{"class":"Coat","probability":0.0},{"class":"Sandal","probability":0.0003},{"class":"Shirt","probability":0.0},{"class":"Sneaker","probability":0.0009},{"class":"Bag","probability":0.0},{"class":"Ankle boot","probability":0.9988}],"predicted_class":"Ankle boot"}
+{"predictions":[{"class":"T-shirt/top","probability":0.0},{"class":"Trouser","probability":0.0},{"class":"Pullover","probability":0.0},{"class":"Dress","probability":0.0},{"class":"Coat","probability":0.0},{"class":"Sandal","probability":0.001},{"class":"Shirt","probability":0.0},{"class":"Sneaker","probability":0.0357},{"class":"Bag","probability":0.0},{"class":"Ankle boot","probability":0.9633}],"predicted_class":"Ankle boot"}
